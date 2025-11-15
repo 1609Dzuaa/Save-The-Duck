@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class FallingObject : MonoBehaviour
 {
-    public Rigidbody2D rigidbody2D;
+    [SerializeField] Rigidbody2D rb2d;
     [SerializeField]
     private float forceAmount;
     void Start()
     {
-        rigidbody2D.velocity = Vector3.down * forceAmount;
+        rb2d.velocity = Vector3.down * forceAmount;
     }
 
     void Update() { 

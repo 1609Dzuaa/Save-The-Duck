@@ -11,6 +11,8 @@ public class PanelForce : MonoBehaviour
     private void Awake()
     {
         EventsManager.Subcribe(EventID.OnSendSliderForce, HandleImage);
+        EventsManager.Subcribe(EventID.OnLevelPassed, (o => _imageForce.fillAmount = 0f));
+        EventsManager.Subcribe(EventID.OnLevelFailed, (o => _imageForce.fillAmount = 0f));
     }
 
     private void OnDestroy()

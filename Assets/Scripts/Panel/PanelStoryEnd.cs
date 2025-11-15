@@ -25,9 +25,16 @@ public class PanelStoryEnd : MonoBehaviour
 
     [SerializeField]
     private Image story3;
+    private bool _isFirstTime = true;
 
-    private void Start()
+    private void OnEnable()
     {
+        if (_isFirstTime)
+        {
+            _isFirstTime = false;
+            return;
+        }
+
         DoAnimStory1(() =>
         {
             DoAnimStory2(() =>

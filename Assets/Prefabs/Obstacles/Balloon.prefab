@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointingDirection: {fileID: 1302677540225915979}
-  pushForce: 40
+  pushForce: 70
   _blowCollider: {fileID: 940994930723725378}
   cooldown: 0.5
   onBalloonClicked:

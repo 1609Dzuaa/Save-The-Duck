@@ -2,7 +2,6 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class BubbleGunController : MonoBehaviour
 {
@@ -16,14 +15,10 @@ public class BubbleGunController : MonoBehaviour
     float scaleFactor = 10f;
 
     [SerializeField]
-    float _maxForceTime,
-        _duration;
-    bool _hasHold = false,
-        _isUp = true,
-        _isMaxScale = false;
-    float _holdTimer,
-        _timerEach,
-        _endValue;
+    float _maxForceTime, _duration;
+
+    bool _hasHold = false, _isUp = true, _isMaxScale = false;
+    float _holdTimer, _timerEach, _endValue;
     Bubble _bubbleInstantiated;
     bool _isInCoroutine = false;
     bool _startInput = false;
@@ -45,6 +40,23 @@ public class BubbleGunController : MonoBehaviour
         if (HasSpawn)
             return;
 
+        if (UIManager.Instance.IsWinPanelActive())
+            return;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+        HandlePCInput();
+#elif UNITY_IOS || UNITY_ANDROID
+        HandleMobileInput();
+#endif
+
+        if (_startInput)
+        {
+            HandleScaleBubbleAndForce();
+        }
+    }
+
+    private void HandlePCInput()
+    {
         if (Input.GetMouseButtonUp(0))
         {
             StopAllCoroutines();
@@ -56,10 +68,41 @@ public class BubbleGunController : MonoBehaviour
             StartCoroutine(HandleTouchHold());
         }
 
-        if (_startInput)
+        if (Input.GetMouseButtonDown(0) && !_hasHold)
         {
-            HandleSpawnBubble();
-            HandleScaleBubbleAndForce();
+            SpawnBubble();
+            _hasHold = true;
+            _holdTimer = _timerEach = Time.time;
+            _endValue = DEFAULT_VALUE_ZERO;
+        }
+        else if (Input.GetMouseButtonUp(0) && !HasSpawn && _bubbleInstantiated != null)
+        {
+            ReleaseBubble();
+        }
+    }
+
+    private void HandleMobileInput()
+    {
+        if (Input.touchCount > 0 && !_isInCoroutine)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began && !_hasHold)
+            {
+                StartCoroutine(HandleTouchHold());
+            }
+            else if (touch.phase == TouchPhase.Ended && !HasSpawn && _bubbleInstantiated != null)
+            {
+                ReleaseBubble();
+            }
+        }
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !_hasHold)
+        {
+            SpawnBubble();
+            _hasHold = true;
+            _holdTimer = _timerEach = Time.time;
+            _endValue = DEFAULT_VALUE_ZERO;
         }
     }
 
@@ -75,7 +118,13 @@ public class BubbleGunController : MonoBehaviour
                 _holdTimer = Time.time;
             }
 
-            if (Time.time - _timerEach > _duration && Input.GetMouseButton(0))
+#if UNITY_EDITOR || UNITY_STANDALONE
+            bool isInputHeld = Input.GetMouseButton(0);
+#elif UNITY_IOS || UNITY_ANDROID
+            bool isInputHeld = Input.touchCount > 0 && Input.GetTouch(0).phase != TouchPhase.Ended;
+#endif
+
+            if (Time.time - _timerEach > _duration && isInputHeld)
             {
                 _endValue = Mathf.Clamp(
                     _endValue + ((_isUp) ? _duration : -_duration),
@@ -89,35 +138,7 @@ public class BubbleGunController : MonoBehaviour
 
                 _timerEach = Time.time;
                 EventsManager.Notify(EventID.OnSendSliderForce, _endValue / _maxForceTime);
-                //Debug.Log("scale bubble: " + _endValue / _maxForceTime);
             }
-
-            //Debug.Log("still run");
-        }
-    }
-
-    private void HandleSpawnBubble()
-    {
-        if (Input.touchCount > 0 && !_hasHold)
-        {
-            SpawnBubble();
-            _hasHold = true;
-            _holdTimer = _timerEach = Time.time;
-            _endValue = DEFAULT_VALUE_ZERO;
-        }
-        else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended && !HasSpawn)
-        {
-            _bubbleInstantiated.IsRealeased = true;
-            HasSpawn = true;
-
-            var rigidbody2D = _bubbleInstantiated.GetComponent<Rigidbody2D>();
-            var force = Vector2.up * (scaleFactor * _bubbleInstantiated.transform.localScale.x);
-            Debug.Log("force: " + force);
-
-            rigidbody2D.AddForce(force, ForceMode2D.Impulse);
-
-            //thả chuột, cấp lực cho bubble bay lên
-            //SpawnBubble();
         }
     }
 
@@ -133,12 +154,23 @@ public class BubbleGunController : MonoBehaviour
         EventsManager.Notify(EventID.OnGameStart);
     }
 
+    private void ReleaseBubble()
+    {
+        _bubbleInstantiated.IsRealeased = true;
+        HasSpawn = true;
+
+        var rigidbody2D = _bubbleInstantiated.GetComponent<Rigidbody2D>();
+        var force = Vector2.up * (scaleFactor * _bubbleInstantiated.transform.localScale.x);
+        Debug.Log("force: " + force);
+
+        rigidbody2D.AddForce(force, ForceMode2D.Impulse);
+    }
+
     private IEnumerator HandleTouchHold()
     {
         _isInCoroutine = true;
         yield return new WaitForSeconds(1f);
         _startInput = true;
-
         _isInCoroutine = false;
     }
 
@@ -154,5 +186,11 @@ public class BubbleGunController : MonoBehaviour
         _holdTimer = DEFAULT_VALUE_ZERO;
         _timerEach = DEFAULT_VALUE_ZERO;
         _bubbleInstantiated = null;
+        Debug.Log("reset bubble gun");
+    }
+
+    public void DoReset()
+    {
+        
     }
 }

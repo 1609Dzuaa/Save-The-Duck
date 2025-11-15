@@ -33,40 +33,53 @@ public class PlayerController : MonoBehaviour
         {
             StopAllCoroutines();
             _isInCoroutine = false;
+            return;
         }
 
         if (!_bubbleGunController.HasSpawn)
         {
-            if (Input.GetMouseButton(0) && !_isInCoroutine)
-            {
-                StartCoroutine(HandleTouchHold());
-            }
-            else if (!IsMouseOverPlayerX() && !_isPreparing)
-            {
-                _animation.SetAnim(AnimationName.Move);
-                _playerMover.Move(_mousePosition);
-            }
-            else if (!_isPreparing)
-            {
-                _animation.SetAnim(AnimationName.Idle);
-            }
+            HandleNoBubbleState();
         }
         else
         {
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                HandleRaycast();
-            }
+            HandleBubbleSpawnedState();
+        }
+    }
 
-            if (!IsMouseOverPlayerX())
-            {
-                _animation.SetAnim(AnimationName.Move);
-                _playerMover.Move(_mousePosition);
-            }
-            else
-            {
-                _animation.SetAnim(AnimationName.Idle);
-            }
+    private void HandleNoBubbleState()
+    {
+        if (Input.GetMouseButton(0) && !_isInCoroutine)
+        {
+            StartCoroutine(HandleTouchHold());
+            return;
+        }
+
+        if (!IsMouseOverPlayerX() && !_isPreparing)
+        {
+            _animation.SetAnim(AnimationName.Move);
+            _playerMover.Move(_mousePosition);
+        }
+        else if (!_isPreparing)
+        {
+            _animation.SetAnim(AnimationName.Idle);
+        }
+    }
+
+    private void HandleBubbleSpawnedState()
+    {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            HandleRaycast();
+        }
+
+        if (!IsMouseOverPlayerX())
+        {
+            _animation.SetAnim(AnimationName.Move);
+            _playerMover.Move(_mousePosition);
+        }
+        else
+        {
+            _animation.SetAnim(AnimationName.Idle);
         }
     }
 

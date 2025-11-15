@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PanelTimer : MonoBehaviour
 {
@@ -29,34 +25,31 @@ public class PanelTimer : MonoBehaviour
     {
         blueImage.SetActive(true);
         redImage.SetActive(false);
-        HandleImage();
 
         EventsManager.Subcribe(EventID.OnLevelPassed, KillTween);
+        EventsManager.Subcribe(EventID.OnLevelFailed, KillTween);
     }
 
     private void KillTween(object obj)
     {
         tween.Kill();
-        HandleImage();
     }
 
     private void SetUp()
     {
         duration = GameData
-            .Instance.GetLevelConfig(GameData.Instance.GetCurrentLevelConfig().level + 1)
+            .Instance.GetLevelConfig(GameData.Instance.GetCurrentLevelConfig().level)
             .limitedTime;
         timeRemaining = duration;
-        timerText = blueImageText;
-        timerText.text =
-            Mathf.FloorToInt(timeRemaining / 60).ToString("00")
-            + ":"
-            + Mathf.CeilToInt(timeRemaining % 60).ToString("00");
     }
 
-    private void HandleImage()
+    public void HandleCountdown()
     {
         SetUp();
         float elapsedTime = 0f;
+        Debug.Log("b4 tween");
+
+        tween?.Kill();
 
         tween = DOTween
             .To(() => timeRemaining, x => timeRemaining = x, 0f, duration)
@@ -65,31 +58,32 @@ public class PanelTimer : MonoBehaviour
                 // Update elapsed time with deltaTime
                 elapsedTime += Time.deltaTime;
                 timeRemaining = Mathf.Max(0, duration - elapsedTime);
+                var formattedTime = string.Empty;
 
                 // Update the timer text
                 if (timeRemaining >= 60)
                 {
-                    timerText.text =
+                    formattedTime =
                         Mathf.FloorToInt(timeRemaining / 60).ToString("00")
                         + ":"
                         + Mathf.CeilToInt(timeRemaining % 60).ToString("00");
                 }
                 else
                 {
-                    timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
+                    formattedTime = Mathf.CeilToInt(timeRemaining).ToString();
                 }
 
                 if (timeRemaining / duration > 0.3f)
                 {
                     blueImage.SetActive(true);
                     redImage.SetActive(false);
+                    blueImageText.text = formattedTime;
                 }
                 else
                 {
                     blueImage.SetActive(false);
                     redImage.SetActive(true);
-
-                    timerText = redImageText;
+                    redImageText.text = formattedTime;
                 }
             })
             .OnComplete(() =>

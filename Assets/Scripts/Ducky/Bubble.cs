@@ -30,7 +30,7 @@ public class Bubble : MonoBehaviour, IClickable
     public bool IsRealeased { get; set; } = false;
     private bool _isPopped = false;
     private bool _isInitialized = false;
-    private float _timeSinceLastClick = Mathf.Infinity;
+    private float _timeSinceLastClick = 0f;// Mathf.Infinity;
 
     private void Awake()
     {
@@ -38,18 +38,26 @@ public class Bubble : MonoBehaviour, IClickable
         _circleBorder = GetComponent<CircleBorder>();
     }
 
+    private void OnMouseDown()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        HandleClick();
+#endif
+    }
 
     private void OnEnable()
     {
-        EventsManager.Subcribe(EventID.OnLevelFailed, (object o) => PopBubble(this));
-        EventsManager.Subcribe(EventID.OnLevelPassed, (object o) => PopBubble(this));
+        EventsManager.Subcribe(EventID.OnLevelFailed, PopTheBubble);
+        EventsManager.Subcribe(EventID.OnLevelPassed, PopTheBubble);
     }
 
     private void OnDisable()
     {
-        EventsManager.Unsubcribe(EventID.OnLevelFailed, (object o) => PopBubble(this));
-        EventsManager.Unsubcribe(EventID.OnLevelPassed, (object o) => PopBubble(this));
+        EventsManager.Unsubcribe(EventID.OnLevelFailed, PopTheBubble);
+        EventsManager.Unsubcribe(EventID.OnLevelPassed, PopTheBubble);
     }
+
+    private void PopTheBubble(object obj) => PopBubble(this);
 
     private void Update()
     {

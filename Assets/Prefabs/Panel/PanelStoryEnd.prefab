@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3299206451168945203
 RectTransform:
   m_ObjectHideFlags: 0
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b471553aea9141e41b77db52d9e2c92b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDuration: 2
+  moveDuration: 1
   fadeDuration: 1
   story1: {fileID: 1953668544575650343}
   story2: {fileID: 2811902059837566504}

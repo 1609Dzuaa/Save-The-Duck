@@ -36,7 +36,7 @@ public class PanelStory : MonoBehaviour
             return;
         }
 
-        Debug.Log("start story 1 " + Time.time);
+        //Debug.Log("start story 1 " + Time.time);
         DoAnimStory1(() =>
         {
             DoAnimStory2(() =>
@@ -56,7 +56,7 @@ public class PanelStory : MonoBehaviour
             .transform.DOMove(Vector3.zero, moveDuration)
             .OnComplete(() =>
             {
-                Debug.Log("done story 1 " + Time.time);
+                //Debug.Log("done story 1 " + Time.time);
                 DOVirtual.DelayedCall(
                     1f,
                     () =>
@@ -71,12 +71,12 @@ public class PanelStory : MonoBehaviour
 
     private void DoAnimStory2(Action callBack = null)
     {
-        Debug.Log("start story 2 " + Time.time);
+        //Debug.Log("start story 2 " + Time.time);
         story2
             .transform.DOMove(Vector3.zero, moveDuration)
             .OnComplete(() =>
             {
-                Debug.Log("done story 2 " + Time.time);
+                //Debug.Log("done story 2 " + Time.time);
                 story2Faucet
                     .transform.DOScale(Vector3.one, 1)
                     .OnComplete(() =>
@@ -97,13 +97,13 @@ public class PanelStory : MonoBehaviour
 
     private void DoAnimStory3(Action callBack = null)
     {
-        Debug.Log("start story 3 " + Time.time);
+        //Debug.Log("start story 3 " + Time.time);
 
         story3
             .transform.DOMove(Vector3.zero, moveDuration)
             .OnComplete(() =>
             {
-                Debug.Log("done story 3 " + Time.time);
+                //Debug.Log("done story 3 " + Time.time);
                 DOVirtual.DelayedCall(3f, () => callBack?.Invoke());
             });
     }

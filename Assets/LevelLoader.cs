@@ -31,5 +31,7 @@ public class LevelLoader : MonoBehaviour
         GameObject.Instantiate(config.tileMap, Vector3.zero, Quaternion.identity, transform);
 
         _background.sprite = config.background;
+        UIManager.Instance.ShowView(PanelName.PanelTimer);
+        UIManager.Instance.GetView(PanelName.PanelTimer).GetComponent<PanelTimer>().HandleCountdown();
     }
 }

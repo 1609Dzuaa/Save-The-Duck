@@ -29,6 +29,17 @@ public class UIManager : MonoBehaviour
         EventsManager.Unsubcribe(EventID.OnGameEnds, (o => ShowView(PanelName.PanelStoryEnd)));
     }
 
+    public bool IsWinPanelActive()
+    {
+        return dictionary[PanelName.PanelWin].activeSelf;
+    }
+
+    public GameObject GetView(PanelName panelName)
+    {
+        var result = dictionary[panelName];
+        return result;
+    }
+
     private void InitUI()
     {
         foreach (var item in _config.Panels)

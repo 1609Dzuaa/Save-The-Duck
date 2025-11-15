@@ -41,6 +41,12 @@ public class GameData : MonoBehaviour
 
     public LevelConfig GetLevelConfig(int level)
     {
+        if (level > _configLevel.levelConfigs.Count)
+        {
+            Debug.LogError("Try get a Level out of range " + level);
+            return null;
+        }
+        Debug.Log("Get level config for level " + level);
         return _configLevel.levelConfigs.FirstOrDefault(p => p.level == level);
     }
 }

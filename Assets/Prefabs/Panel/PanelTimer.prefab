@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 99:99
+  m_text: 55:55
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc0f3b83578b76548931f5c85d579315, type: 2}
   m_sharedMaterial: {fileID: -2286180209348213631, guid: cc0f3b83578b76548931f5c85d579315, type: 2}
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 99:99
+  m_text: 44:44
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc0f3b83578b76548931f5c85d579315, type: 2}
   m_sharedMaterial: {fileID: -2286180209348213631, guid: cc0f3b83578b76548931f5c85d579315, type: 2}
@@ -362,7 +362,6 @@ MonoBehaviour:
   blueImageText: {fileID: 2933033375560993000}
   redImage: {fileID: 8803823858493654840}
   redImageText: {fileID: 202597604090098544}
-  duration: 40
 --- !u!1 &4655968268741951588
 GameObject:
   m_ObjectHideFlags: 0
