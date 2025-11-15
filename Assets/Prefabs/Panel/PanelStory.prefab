@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a6a6ecef8e59840bde89e012fb91b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDuration: 2
+  moveDuration: 1
   fadeDuration: 1
   story1: {fileID: 1953668544575650343}
   story2: {fileID: 2811902059837566504}
