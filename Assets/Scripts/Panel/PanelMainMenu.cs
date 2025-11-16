@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Runtime.InteropServices;
 
 public class PanelMainMenu : MonoBehaviour
 {
@@ -37,17 +37,8 @@ public class PanelMainMenu : MonoBehaviour
 
     private void OnClickedOption() { }
 
-#if UNITY_WEBGL
-    [DllImport("__Internal")]
-    private static extern void ReloadPage();
-#endif
-
     public void OnClickedExit()
     {
-#if UNITY_WEBGL
-        ReloadPage();
-#else
         Application.Quit();
-#endif
     }
 }

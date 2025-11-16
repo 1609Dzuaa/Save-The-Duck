@@ -118,10 +118,11 @@ public class BubbleGunController : MonoBehaviour
                 _holdTimer = Time.time;
             }
 
+            bool isInputHeld = false;
 #if UNITY_EDITOR || UNITY_STANDALONE
-            bool isInputHeld = Input.GetMouseButton(0);
+            isInputHeld = Input.GetMouseButton(0);
 #elif UNITY_IOS || UNITY_ANDROID
-            bool isInputHeld = Input.touchCount > 0 && Input.GetTouch(0).phase != TouchPhase.Ended;
+            isInputHeld = Input.touchCount > 0 && Input.GetTouch(0).phase != TouchPhase.Ended;
 #endif
 
             if (Time.time - _timerEach > _duration && isInputHeld)
