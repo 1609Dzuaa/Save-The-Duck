@@ -160,6 +160,7 @@ public class Bubble : MonoBehaviour, IClickable
 
         bubble.GetComponentInChildren<Animator>().SetTrigger(_popAnimationHash);
         bubble.GetComponent<Collider2D>().enabled = false;
+        SoundsManager.Instance.PlaySfx(ESoundName.BubblePop);
         _isPopped = true;
 
         Destroy(bubble.gameObject, 2f);

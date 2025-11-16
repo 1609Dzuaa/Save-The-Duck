@@ -33,5 +33,8 @@ public class LevelLoader : MonoBehaviour
         _background.sprite = config.background;
         UIManager.Instance.ShowView(PanelName.PanelTimer);
         UIManager.Instance.GetView(PanelName.PanelTimer).GetComponent<PanelTimer>().HandleCountdown();
+
+        SoundsManager.Instance.PlaySfx(ESoundName.StartWhistle);
+        SoundsManager.Instance.PlayMusic(ESoundName.PipeDrain);
     }
 }

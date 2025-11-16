@@ -37,5 +37,17 @@ public class PanelMainMenu : MonoBehaviour
 
     private void OnClickedOption() { }
 
-    private void OnClickedExit() { }
+#if UNITY_WEBGL
+    [DllImport("__Internal")]
+    private static extern void ReloadPage();
+#endif
+
+    public void OnClickedExit()
+    {
+#if UNITY_WEBGL
+        ReloadPage();
+#else
+        Application.Quit();
+#endif
+    }
 }

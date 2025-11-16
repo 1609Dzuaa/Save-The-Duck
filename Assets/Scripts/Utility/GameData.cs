@@ -25,7 +25,7 @@ public class GameData : MonoBehaviour
     {
         if (_currentLevel == _configLevel.levelConfigs.Last())
         {
-            SceneManager.LoadScene(2);
+            EventsManager.Notify(EventID.OnGameEnds);
             return false;
         }
 

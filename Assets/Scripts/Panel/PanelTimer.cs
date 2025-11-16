@@ -91,6 +91,7 @@ public class PanelTimer : MonoBehaviour
                 UIManager.Instance.HideView(PanelName.PanelTimer);
                 UIManager.Instance.HideView(PanelName.PanelForce);
                 EventsManager.Notify(EventID.OnLevelFailed);
+                SoundsManager.Instance.PlaySfx(ESoundName.Lose);
             });
     }
 }

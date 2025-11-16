@@ -7,5 +7,6 @@ public class EmergencyButton : MonoBehaviour
     {
         Debug.Log("Level passed");
         EventsManager.Notify(EventID.OnLevelPassed);
+        SoundsManager.Instance.PlaySfx(ESoundName.Win);
     }
 }

@@ -43,7 +43,7 @@ public class BubbleGunController : MonoBehaviour
         if (UIManager.Instance.IsWinPanelActive())
             return;
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
         HandlePCInput();
 #elif UNITY_IOS || UNITY_ANDROID
         HandleMobileInput();

@@ -21,17 +21,17 @@ public class PanelStoryEnd : MonoBehaviour
     private Image story2;
 
     [SerializeField]
-    private Image story2Faucet;
-
-    [SerializeField]
     private Image story3;
     private bool _isFirstTime = true;
+
+    private LevelLoader _levelLoader;
 
     private void OnEnable()
     {
         if (_isFirstTime)
         {
             _isFirstTime = false;
+            _levelLoader = FindObjectOfType<LevelLoader>();
             return;
         }
 
@@ -39,7 +39,10 @@ public class PanelStoryEnd : MonoBehaviour
         {
             DoAnimStory2(() =>
             {
-                DoAnimStory3();
+                DoAnimStory3(() => 
+                {
+                    SceneManager.LoadScene("MenuScene");
+                });
             });
         });
     }
@@ -68,21 +71,15 @@ public class PanelStoryEnd : MonoBehaviour
             .transform.DOMove(Vector3.zero, moveDuration)
             .OnComplete(() =>
             {
-                story2Faucet
-                    .transform.DOScale(Vector3.one, 1)
-                    .OnComplete(() =>
+                DOVirtual.DelayedCall(
+                    1f,
+                    () =>
                     {
-                        DOVirtual.DelayedCall(
-                            1f,
-                            () =>
-                            {
-                                story2Faucet.DOColor(new Color32(50, 50, 50, 255), fadeDuration);
-                                story2
-                                    .DOColor(new Color32(50, 50, 50, 255), fadeDuration)
-                                    .OnComplete(() => callBack?.Invoke());
-                            }
-                        );
-                    });
+                        story2
+                            .DOColor(new Color32(50, 50, 50, 255), fadeDuration)
+                            .OnComplete(() => callBack?.Invoke());
+                    }
+                );
             });
     }
 
